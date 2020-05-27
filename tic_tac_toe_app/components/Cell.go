@@ -29,7 +29,7 @@ func (c *Cell) getMark() string {
 	return c.mark
 }
 
-//setMark returns the selected cell with the required mark
+//setMark returns error if cell is already marked, else it marks the cell
 func (c *Cell) setMark(m string) error {
 	if c.mark == "-" {
 		c.mark = m
