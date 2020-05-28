@@ -18,19 +18,19 @@ const (
 	OMark = "O"
 )
 
-//newCell returns the mark from Cell struct
-func newCell() *Cell {
+//NewCell returns the mark from Cell struct
+func NewCell() *Cell {
 	c := Cell{mark: NoMark}
 	return &c
 }
 
-//getMark returns the mark of the cell
-func (c *Cell) getMark() string {
+//GetMark returns the mark of the cell
+func (c *Cell) GetMark() string {
 	return c.mark
 }
 
-//setMark returns error if cell is already marked, else it marks the cell
-func (c *Cell) setMark(m string) error {
+//SetMark returns error if cell is already marked, else it marks the cell
+func (c *Cell) SetMark(m string) error {
 	if c.mark == "-" {
 		c.mark = m
 		return nil

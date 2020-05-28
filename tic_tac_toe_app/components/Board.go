@@ -6,11 +6,11 @@ type Board struct {
 	dimension int
 }
 
-//createBoard will create a new Board
-func createBoard(dim int) *Board {
+//CreateBoard will create a new Board
+func CreateBoard(dim int) *Board {
 	cellMat := make([]*Cell, dim*dim)
 	for i := 0; i < dim*dim; i++ {
-		cellMat[i] = newCell()
+		cellMat[i] = NewCell()
 	}
 	return &Board{
 		Matrix:    cellMat,
