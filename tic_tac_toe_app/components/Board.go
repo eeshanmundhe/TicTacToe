@@ -2,18 +2,20 @@ package components
 
 //Board stores cell
 type Board struct {
-	Matrix    []*Cell
-	dimension int
+	Cells     []*Cell
+	Dimension uint8
 }
 
-//CreateBoard will create a new Board
-func CreateBoard(dim int) *Board {
-	cellMat := make([]*Cell, dim*dim)
-	for i := 0; i < dim*dim; i++ {
-		cellMat[i] = NewCell()
+//NewBoard ill create a new Board
+func NewBoard(dim uint8) *Board {
+	TotalCells := dim * dim
+	var boardMatrix = make([]*Cell, TotalCells)
+	boardMatrix = make([]*Cell, TotalCells)
+	for i := range boardMatrix {
+		boardMatrix[i] = NewCell()
 	}
 	return &Board{
-		Matrix:    cellMat,
-		dimension: dim,
+		Cells:     boardMatrix,
+		Dimension: dim,
 	}
 }
