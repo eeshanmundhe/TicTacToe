@@ -23,20 +23,20 @@ func (b *BoardService) PutMarkInPosition(position uint8, player *components.Play
 	return nil
 }
 
-//PrintBoard will print the updated board
-func (b *BoardService) PrintBoard() string {
-	out := "\n\t\t\t"
+//Display will print the updated board
+func (b *BoardService) Display() string {
+	ans := "\n\t\t\t"
 	for i := 0; i < int(b.Dimension*b.Dimension); i++ {
-		out += b.Cells[i].Mark
+		ans += b.Cells[i].Mark
 		if i%int(b.Dimension) == int(b.Dimension)-1 {
-			out += "\n\t\t\t"
+			ans += "\n\t\t\t"
 		}
 	}
-	return out
+	return ans
 }
 
-//CheckBoardIsFull will return false if the board is not full
-func (b *BoardService) CheckBoardIsFull() bool {
+//CheckGameOver will return false if the board is not full
+func (b *BoardService) CheckGameOver() bool {
 	for i := 0; i < int(b.Dimension*b.Dimension); i++ {
 		if b.Cells[i].GetMark() == components.NoMark {
 			return false

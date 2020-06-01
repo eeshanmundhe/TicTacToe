@@ -18,13 +18,13 @@ func NewGameService(pl1, pl2 *components.Player, size int) *GameService {
 }
 
 //Play is used to play game
-func (g *GameService) Play(pos uint8, pl *components.Player) (string, error) {
-	if pos < 0 || pos > g.Dimension*g.Dimension-1 {
+func (g *GameService) Play(place uint8, nm *components.Player) (string, error) {
+	if place < 0 || place > g.Dimension*g.Dimension-1 {
 		return "nil", errors.New("\t\t\tPosition is out of bounds")
 	}
-	err := g.PutMarkInPosition(pos, pl)
+	err := g.PutMarkInPosition(place, nm)
 	if err != nil {
 		return "nil", err
 	}
-	return g.GiveResult(pl), nil
+	return g.GiveResult(nm), nil
 }

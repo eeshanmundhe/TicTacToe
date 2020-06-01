@@ -89,7 +89,7 @@ func TestCheckColumn(t *testing.T) {
 	}
 }
 
-func TestCheckLRDiagonal(t *testing.T) {
+func TestCheckAcrossLeft(t *testing.T) {
 	tests := []struct {
 		input    *ResultService
 		mark     string
@@ -125,13 +125,13 @@ func TestCheckLRDiagonal(t *testing.T) {
 		}, components.XMark, true},
 	}
 	for _, test := range tests {
-		if test.input.checkLRDiagonal(test.mark) != test.expected {
-			t.Error("check LR diagonal failed")
+		if test.input.checkAcrossLeft(test.mark) != test.expected {
+			t.Error("check Left diagonal failed")
 		}
 	}
 }
 
-func TestCheckRLDiagonal(t *testing.T) {
+func TestCheckAcrossRight(t *testing.T) {
 	tests := []struct {
 		input    *ResultService
 		mark     string
@@ -155,8 +155,8 @@ func TestCheckRLDiagonal(t *testing.T) {
 		}, components.XMark, true},
 	}
 	for _, test := range tests {
-		if test.input.checkRLDiagonal(test.mark) != test.expected {
-			t.Error("check RL diagonal failed")
+		if test.input.checkAcrossRight(test.mark) != test.expected {
+			t.Error("check right diagonal failed")
 		}
 	}
 }

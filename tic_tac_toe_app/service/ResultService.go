@@ -14,58 +14,58 @@ func NewResultService(boardService *BoardService) *ResultService {
 
 func (r *ResultService) checkRow(mark string) bool {
 	//for rows
-	count := 0
+	k := 0
 	for i := 0; i < int(r.Dimension*r.Dimension); i++ {
 		if r.Cells[i].GetMark() == mark {
-			count++
+			k++
 		}
-		if count == int(r.Dimension) {
+		if k == int(r.Dimension) {
 			return true
 		}
 		if i%int(r.Dimension) == int(r.Dimension)-1 {
-			count = 0
+			k = 0
 		}
 	}
 	return false
 }
 func (r *ResultService) checkColumn(mark string) bool {
 	//for columns
-	countcol := make([]int, r.Dimension)
+	kcol := make([]int, r.Dimension)
 	for i := 0; i < int(r.Dimension*r.Dimension); i++ {
 
 		if r.Cells[i].GetMark() == mark {
-			countcol[i%int(r.Dimension)]++
+			kcol[i%int(r.Dimension)]++
 		}
-		if contains(countcol, int(r.Dimension)) {
+		if contains(kcol, int(r.Dimension)) {
 			return true
 		}
 	}
 	return false
 }
-func (r *ResultService) checkLRDiagonal(mark string) bool {
+func (r *ResultService) checkAcrossLeft(mark string) bool {
 	//for LR diagonal
-	count := 0
+	k := 0
 	j := 0
 	for i := 0; i < int(r.Dimension); i++ {
 
 		if r.Cells[(i*int(r.Dimension))+j].GetMark() == mark {
-			count++
+			k++
 		}
-		if count == int(r.Dimension) {
+		if k == int(r.Dimension) {
 			return true
 		}
 		j++
 	}
 	return false
 }
-func (r *ResultService) checkRLDiagonal(mark string) bool {
+func (r *ResultService) checkAcrossRight(mark string) bool {
 	//for RL diagonal
-	count := 0
+	k := 0
 	for i := 0; i < int(r.Dimension); i++ {
 		if r.Cells[(i+1)*(int(r.Dimension)-1)].GetMark() == mark {
-			count++
+			k++
 		}
-		if count == int(r.Dimension) {
+		if k == int(r.Dimension) {
 			return true
 		}
 	}
@@ -87,11 +87,11 @@ func (r *ResultService) GiveResult(player *components.Player) string {
 		return "win"
 	} else if r.checkColumn(player.Marking) {
 		return "win"
-	} else if r.checkLRDiagonal(player.Marking) {
+	} else if r.checkAcrossLeft(player.Marking) {
 		return "win"
-	} else if r.checkRLDiagonal(player.Marking) {
+	} else if r.checkAcrossRight(player.Marking) {
 		return "win"
-	} else if r.CheckBoardIsFull() {
+	} else if r.CheckGameOver() {
 		return "draw"
 	}
 	return "ongoing"

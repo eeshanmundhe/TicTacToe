@@ -41,7 +41,7 @@ func TestPutMarkInPosition(t *testing.T) {
 	}
 }
 
-func TestPrintBoard(t *testing.T) {
+func TestDisplay(t *testing.T) {
 	tests := []struct {
 		requiredBoard  *BoardService
 		requiredMatrix string
@@ -64,14 +64,14 @@ func TestPrintBoard(t *testing.T) {
 		}, "\n\t\t\t---\n\t\t\tX--\n\t\t\t-X-\n\t\t\t"},
 	}
 	for _, test := range tests {
-		got := test.requiredBoard.PrintBoard()
+		got := test.requiredBoard.Display()
 		if test.requiredMatrix != got {
 			t.Error(test.requiredMatrix, got)
 		}
 	}
 }
 
-func TestCheckBoardIsFull(t *testing.T) {
+func TestCheckGameOver(t *testing.T) {
 	tests := []struct {
 		requiredBoard *BoardService
 		want          bool
@@ -97,7 +97,7 @@ func TestCheckBoardIsFull(t *testing.T) {
 		}, true},
 	}
 	for _, test := range tests {
-		got := test.requiredBoard.CheckBoardIsFull()
+		got := test.requiredBoard.CheckGameOver()
 		if test.want != got {
 			t.Error(test.want, got)
 		}
