@@ -1,8 +1,6 @@
 package service
 
-import (
-	"tic_tac_toe_app/components"
-)
+import "tic_tac_toe_app/components"
 
 //BoardService structure stores board to make changes
 type BoardService struct {
@@ -10,35 +8,35 @@ type BoardService struct {
 }
 
 //NewBoardService will return the Board after changes
-func NewBoardService(size int) *BoardService {
-	return &BoardService{components.NewBoard(uint8(size))}
+func NewBoardService(board *components.Board) *BoardService {
+	return &BoardService{board}
 }
 
 //PutMarkInPosition will mark the given position and return error if already marked
-func (b *BoardService) PutMarkInPosition(position uint8, player *components.Player) error {
-	err := b.Cells[position].SetMark(player.Marking)
-	if err != nil {
-		return err
-	}
-	return nil
+func (bs *BoardService) PutMarkInPosition(p *components.Player, position uint8) error {
+	err := bs.Board.Cells[position].SetMark(p.Mark)
+	return err
 }
 
-//Display will print the updated board
-func (b *BoardService) Display() string {
-	ans := "\n\t\t\t"
-	for i := 0; i < int(b.Dimension*b.Dimension); i++ {
-		ans += b.Cells[i].Mark
-		if i%int(b.Dimension) == int(b.Dimension)-1 {
-			ans += "\n\t\t\t"
+//PrintBoard will print the updated board
+func (bs *BoardService) PrintBoard() string {
+	matrixString := "\n\t\t\t"
+	boardSize := uint8(len(bs.Board.Cells))
+	for i := uint8(0); i < (boardSize); i++ {
+		matrixString += bs.Cells[i].Mark
+		if i%(bs.Size) == (bs.Size)-1 {
+			matrixString += "\n\t\t\t"
 		}
+		//matrixString += fmt.Sprint(bs.Board.Cells[i].GetMark())
 	}
-	return ans
+	return matrixString
 }
 
-//CheckGameOver will return false if the board is not full
-func (b *BoardService) CheckGameOver() bool {
-	for i := 0; i < int(b.Dimension*b.Dimension); i++ {
-		if b.Cells[i].GetMark() == components.NoMark {
+//CheckBoardIsFull will return false if the board is not full
+func (bs *BoardService) CheckBoardIsFull() bool {
+	boardSize := uint8(len(bs.Board.Cells))
+	for i := uint8(0); i < (boardSize); i++ {
+		if bs.Board.Cells[i].GetMark() == components.NoMark {
 			return false
 		}
 	}

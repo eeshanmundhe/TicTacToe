@@ -14,7 +14,6 @@ import (
 )
 
 func main() {
-
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Println("\n\t\t\tWelcome to 2 player Tic Tac Toe Game")
@@ -26,107 +25,133 @@ func main() {
 	fmt.Println("\t\t\t5. Player who goes first will be displayed and get assigned X.")
 	fmt.Println("\t\t\t6. The positions start with 0 at first row and first column.")
 
-FLAG:
-	fmt.Println("\n\t\t\tEnter the number of rows to start")
-	dimensions, _ := reader.ReadString('\n')
-	dimensions = strings.TrimSpace(dimensions)
-	dimension, err := strconv.Atoi(dimensions)
-
-	if err != nil || (dimension < 3 || dimension > 5) {
-		fmt.Println("\t\t\tYou were supposed to enter an Integer greater than 2 and lesser than 6.")
-		goto FLAG
+	var board *components.Board
+	for {
+		flag := 0
+		fmt.Println("\n\t\t\tEnter the size of the board: ")
+		sizeNow, _ := reader.ReadString('\n')
+		sizeNow = strings.TrimSpace(sizeNow)
+		size, err := strconv.Atoi(sizeNow)
+		if err != nil || (size < 3 || size > 5) {
+			fmt.Println("\t\t\tPlease enter a valid number")
+			flag = 1
+		}
+		if flag == 0 {
+			board = components.NewBoard(uint8(size))
+			break
+		}
 	}
 
-	fmt.Println("\t\t\tType the name of Player 1: ")
+	var player1, player2 *components.Player
 
-	player1, _ := reader.ReadString('\n')
+	fmt.Println("\t\t\tEnter the Name of player 1: ")
+	name1, _ := reader.ReadString('\n')
+	name1 = strings.TrimSpace(name1)
 
-	player1 = strings.TrimSpace(player1)
-
-	fmt.Println("\t\t\tType the name of Player 2: ")
-
-	player2, _ := reader.ReadString('\n')
-
-	player2 = strings.TrimSpace(player2)
+	fmt.Println("\t\t\tEnter the Name of player 2: ")
+	name2, _ := reader.ReadString('\n')
+	name2 = strings.TrimSpace(name2)
 
 	rand.Seed(time.Now().UTC().UnixNano())
-
 	randomNumber := rand.Intn(10)
 
-	var first, second *components.Player
 	cmd := exec.Command("cmd", "/c", "cls")
 
 	if randomNumber >= 5 {
-		first = components.NewPlayer(player1, "X")
-		second = components.NewPlayer(player2, "O")
+		player1 = components.NewPlayer(name1, "X")
+		player2 = components.NewPlayer(name2, "O")
 		time.Sleep(time.Second)
 		cmd.Stdout = os.Stdout
 		cmd.Run()
-		fmt.Println("\t\t\tComputer chooses", player1, "to play first!")
+		fmt.Println("\t\t\tComputer chooses", name1, "to play first!")
 	} else {
-		first = components.NewPlayer(player2, "X")
-		second = components.NewPlayer(player1, "O")
+		player1 = components.NewPlayer(name2, "X")
+		player2 = components.NewPlayer(name1, "O")
 		time.Sleep(time.Second)
 		cmd.Stdout = os.Stdout
 		cmd.Run()
-		fmt.Println("\t\t\tComputer chooses", player2, "to play first!")
+		fmt.Println("\t\t\tComputer chooses", name2, "to play first!")
 	}
+	ourBoardService := service.NewBoardService(board)
+	ourResultService := service.NewResultService(ourBoardService)
+	ourGameService := service.NewGameService(ourResultService, [2]*components.Player{player1, player2})
+	fmt.Println(ourGameService.PrintBoard())
 
-	newGame := service.NewGameService(first, second, dimension)
-
-	var result string
-	start := true
-
-	fmt.Println("\t\t\tEnter your desired position number to mark")
 	for {
-
-		fmt.Print(newGame.Display())
-
-		fmt.Println("Enter position number : ")
-
-		pos, _ := reader.ReadString('\n')
-		pos = strings.TrimSpace(pos)
-		position, err := strconv.Atoi(pos)
-
-		if err == nil {
-			time.Sleep(time.Second)
-			cmd1 := exec.Command("cmd", "/c", "cls")
-			cmd1.Stdout = os.Stdout
-			cmd1.Run()
-		} else {
-			fmt.Println("\t\t\tPosition number should be an integer")
-			continue
-		}
-
-		if start {
-			result, err = newGame.BeginGame(uint8(position), first)
-		} else {
-			result, err = newGame.BeginGame(uint8(position), second)
-		}
-
-		if err != nil {
-			fmt.Println(err)
-			continue
-		} else if result == "win" {
-			if start {
-				fmt.Print(newGame.Display())
-				fmt.Println(first.Name, "is the winner! ")
-				break
+		var result service.Result
+		for {
+			flag := 0
+			fmt.Println("\t\t\tEnter your position", player1.Name)
+			indexNow, _ := reader.ReadString('\n')
+			indexNow = strings.TrimSpace(indexNow)
+			index, err := strconv.Atoi(indexNow)
+			if err != nil {
+				fmt.Println(err)
+				flag = 1
+				continue
 			} else {
-				fmt.Print(newGame.Display())
-				fmt.Println(second.Name, "is the winner! ")
+				time.Sleep(time.Second)
+				cmd1 := exec.Command("cmd", "/c", "cls")
+				cmd1.Stdout = os.Stdout
+				cmd1.Run()
+			}
+
+			result, err = ourGameService.Play(uint8(index))
+			if err != nil {
+				fmt.Println(err)
+				flag = 1
+				continue
+			}
+			if flag == 0 {
 				break
 			}
-		} else if result == "draw" {
-			fmt.Print("\t\t\tThe match is draw")
-			break
 		}
 
-		if !start {
-			fmt.Print("\t\t\t", first.Name, " your chance \n")
-		} else {
-			fmt.Print("\t\t\t", second.Name, " your chance \n")
+		fmt.Println(ourGameService.PrintBoard())
+		fmt.Println("")
+		if result.Win == true {
+			fmt.Println("\t\t\tWinner is ", player1.Name)
+			break
 		}
-		start = !start
+		if result.Draw == true {
+			fmt.Println("\t\t\tIt is a draw")
+			break
+		}
+		for {
+			flag := 0
+			fmt.Println("\t\t\tEnter our position", player2.Name)
+			indexNow, err := reader.ReadString('\n')
+			indexNow = strings.TrimSpace(indexNow)
+			index, err := strconv.Atoi(indexNow)
+			if err != nil {
+				fmt.Println(err)
+				flag = 1
+				continue
+			} else {
+				time.Sleep(time.Second)
+				cmd1 := exec.Command("cmd", "/c", "cls")
+				cmd1.Stdout = os.Stdout
+				cmd1.Run()
+			}
+
+			result, err = ourGameService.Play(uint8(index))
+			if err != nil {
+				fmt.Println(err)
+				flag = 1
+				continue
+			}
+			if flag == 0 {
+				break
+			}
+		}
+		fmt.Println(ourGameService.PrintBoard())
+		if result.Win == true {
+			fmt.Println("\t\t\tWinner is", player2.Name)
+			break
+		}
+		if result.Draw == true {
+			fmt.Println("\t\t\tIt's a draw")
+			break
+		}
 	}
 }
