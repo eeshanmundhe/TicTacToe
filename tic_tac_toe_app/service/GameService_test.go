@@ -6,7 +6,7 @@ import (
 	"tic_tac_toe_app/components"
 )
 
-func TestPlay(t *testing.T) {
+func TestBeginGame(t *testing.T) {
 	var list = []struct {
 		position uint8
 		g        *GameService
@@ -28,7 +28,7 @@ func TestPlay(t *testing.T) {
 	}
 
 	for _, str := range list {
-		_, err := str.g.Play(str.position, &components.Player{Name: "AEW", Marking: "X"})
+		_, err := str.g.BeginGame(str.position, &components.Player{Name: "AEW", Marking: "X"})
 		if err.Error() != str.expected.Error() {
 			t.Error(err, str.expected)
 		}

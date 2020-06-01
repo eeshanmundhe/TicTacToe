@@ -17,8 +17,8 @@ func NewGameService(pl1, pl2 *components.Player, size int) *GameService {
 	return &GameService{NewResultService(NewBoardService(size)), pl1, pl2}
 }
 
-//Play is used to play game
-func (g *GameService) Play(place uint8, nm *components.Player) (string, error) {
+//BeginGame is used to play game
+func (g *GameService) BeginGame(place uint8, nm *components.Player) (string, error) {
 	if place < 0 || place > g.Dimension*g.Dimension-1 {
 		return "nil", errors.New("\t\t\tPosition is out of bounds")
 	}

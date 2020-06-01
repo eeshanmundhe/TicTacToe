@@ -80,7 +80,7 @@ FLAG:
 	fmt.Println("\t\t\tEnter your desired position number to mark")
 	for {
 
-		fmt.Print(newGame.PrintBoard())
+		fmt.Print(newGame.Display())
 
 		fmt.Println("Enter position number : ")
 
@@ -99,9 +99,9 @@ FLAG:
 		}
 
 		if start {
-			result, err = newGame.Play(uint8(position), first)
+			result, err = newGame.BeginGame(uint8(position), first)
 		} else {
-			result, err = newGame.Play(uint8(position), second)
+			result, err = newGame.BeginGame(uint8(position), second)
 		}
 
 		if err != nil {
@@ -109,11 +109,11 @@ FLAG:
 			continue
 		} else if result == "win" {
 			if start {
-				fmt.Print(newGame.PrintBoard())
+				fmt.Print(newGame.Display())
 				fmt.Println(first.Name, "is the winner! ")
 				break
 			} else {
-				fmt.Print(newGame.PrintBoard())
+				fmt.Print(newGame.Display())
 				fmt.Println(second.Name, "is the winner! ")
 				break
 			}
