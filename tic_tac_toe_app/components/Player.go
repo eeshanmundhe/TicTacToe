@@ -1,15 +1,15 @@
 package components
 
-//Player structure stores the name and assigned mark of a player
+//Player stores name and assigned mark of a player
 type Player struct {
-	Name    string
-	Marking string
+	Name string
+	Mark string
 }
 
-//NewPlayer will return the Structure Player after updating its values
+//NewPlayer returns struct Player
 func NewPlayer(name, mark string) *Player {
 	return &Player{
-		Name:    name,
-		Marking: mark,
+		Name: name,
+		Mark: mark,
 	}
 }

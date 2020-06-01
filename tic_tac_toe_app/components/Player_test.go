@@ -9,22 +9,20 @@ func TestNewPlayer(t *testing.T) {
 		name string
 		mark string
 	}{
-		{"Reigns", OMark},
-		{"Lesnar", OMark},
 		{"Strowman", XMark},
-		{"Joe", XMark},
+		{"Roman", OMark},
 	}
-	for _, i := range tests {
-		currentName := i.name
-		requiredMark := i.mark
-		testPlayer := NewPlayer(currentName, requiredMark)
-		returnedName := testPlayer.Name
-		returnedMark := testPlayer.Marking
-		if currentName != returnedName {
-			t.Error(currentName, returnedName)
+	for _, test := range tests {
+		wantName := test.name
+		wantMark := test.mark
+		testPlayer := NewPlayer(wantName, wantMark)
+		gotName := testPlayer.Name
+		gotMark := testPlayer.Mark
+		if wantName != gotName {
+			t.Error(wantName, gotName)
 		}
-		if requiredMark != returnedMark {
-			t.Error(requiredMark, returnedMark)
+		if wantMark != gotMark {
+			t.Error(wantMark, gotMark)
 		}
 	}
 }
