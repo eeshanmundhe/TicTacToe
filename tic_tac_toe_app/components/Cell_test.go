@@ -8,14 +8,14 @@ func TestNewCell(t *testing.T) {
 	//tests if cell is unmarked initially
 	current := NewCell()
 	required := NoMark
-	if current.mark != required {
-		t.Error(current.mark, required)
+	if current.Mark != required {
+		t.Error(current.Mark, required)
 	}
 }
 
 func TestSetMark(t *testing.T) {
 	//tests the case when cell is not marked and user chooses X
-	current1 := &Cell{mark: NoMark}
+	current1 := &Cell{Mark: NoMark}
 	req1 := "X"
 	var err1 error
 	err1 = nil
@@ -24,7 +24,7 @@ func TestSetMark(t *testing.T) {
 	}
 
 	//tests the case when cell is not marked and user chooses O
-	current2 := &Cell{mark: NoMark}
+	current2 := &Cell{Mark: NoMark}
 	req2 := "O"
 	var err2 error
 	err2 = nil
@@ -33,7 +33,7 @@ func TestSetMark(t *testing.T) {
 	}
 
 	//tests the case when cell is marked X and user chooses X
-	current3 := &Cell{mark: XMark}
+	current3 := &Cell{Mark: XMark}
 	req3 := "X"
 	var err3 error
 	err3 = nil
@@ -42,7 +42,7 @@ func TestSetMark(t *testing.T) {
 	}
 
 	//tests the case when cell is marked X and user chooses O
-	current4 := &Cell{mark: XMark}
+	current4 := &Cell{Mark: XMark}
 	req4 := "O"
 	var err4 error
 	err4 = nil
@@ -51,7 +51,7 @@ func TestSetMark(t *testing.T) {
 	}
 
 	//tests the case when cell is marked O and user chooses O
-	current5 := &Cell{mark: OMark}
+	current5 := &Cell{Mark: OMark}
 	req5 := "O"
 	var err5 error
 	err5 = nil
@@ -60,7 +60,7 @@ func TestSetMark(t *testing.T) {
 	}
 
 	//tests the case when cell is marked O and user chooses X
-	current6 := &Cell{mark: OMark}
+	current6 := &Cell{Mark: OMark}
 	req6 := "X"
 	var err6 error
 	err6 = nil
@@ -72,21 +72,21 @@ func TestSetMark(t *testing.T) {
 
 func TestGetMark(t *testing.T) {
 	//tests if X is marked
-	current1 := &Cell{mark: XMark}
+	current1 := &Cell{Mark: XMark}
 	required1 := XMark
 	if current1.GetMark() != required1 {
 		t.Error(current1, required1)
 	}
 
 	//tests if O is marked
-	current2 := &Cell{mark: OMark}
+	current2 := &Cell{Mark: OMark}
 	required2 := OMark
 	if current2.GetMark() != required2 {
 		t.Error(current2, required2)
 	}
 
 	//tests if cell is unmarked
-	current3 := &Cell{mark: NoMark}
+	current3 := &Cell{Mark: NoMark}
 	required3 := NoMark
 	if current3.GetMark() != required3 {
 		t.Error(current3, required3)
