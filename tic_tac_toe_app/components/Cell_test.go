@@ -1,94 +1,55 @@
 package components
 
 import (
+	"errors"
 	"testing"
 )
 
 func TestNewCell(t *testing.T) {
-	//tests if cell is unmarked initially
-	current := NewCell()
-	required := NoMark
-	if current.Mark != required {
-		t.Error(current.Mark, required)
+	want := NoMark
+	got := NewCell()
+	if want != got.Mark {
+		t.Error(want, got.Mark)
 	}
 }
 
-func TestSetMark(t *testing.T) {
-	//tests the case when cell is not marked and user chooses X
-	current1 := &Cell{Mark: NoMark}
-	req1 := "X"
-	var err1 error
-	err1 = nil
-	if current1.SetMark(req1) != err1 {
-		t.Error(current1.SetMark(req1), err1)
+func TestMark(t *testing.T) {
+	tests := []struct {
+		cell *Cell
+		mark string
+		want error
+	}{
+		{&Cell{Mark: NoMark}, XMark, nil},
+		{&Cell{Mark: NoMark}, OMark, nil},
+		{&Cell{Mark: XMark}, OMark, errors.New("Cell is already marked")},
+		{&Cell{Mark: XMark}, XMark, errors.New("Cell is already marked")},
+		{&Cell{Mark: OMark}, OMark, errors.New("Cell is already marked")},
+		{&Cell{Mark: OMark}, XMark, errors.New("Cell is already marked")},
 	}
-
-	//tests the case when cell is not marked and user chooses O
-	current2 := &Cell{Mark: NoMark}
-	req2 := "O"
-	var err2 error
-	err2 = nil
-	if current2.SetMark(req2) != err2 {
-		t.Error(current1.SetMark(req2), err2)
+	for _, test := range tests {
+		got := test.cell.SetMark(test.mark)
+		if test.want != nil || got != nil {
+			if test.want.Error() != got.Error() {
+				t.Error(test.want, got)
+			}
+		}
 	}
-
-	//tests the case when cell is marked X and user chooses X
-	current3 := &Cell{Mark: XMark}
-	req3 := "X"
-	var err3 error
-	err3 = nil
-	if current3.SetMark(req3) != err3 {
-		t.Error(current1.SetMark(req3), err3)
-	}
-
-	//tests the case when cell is marked X and user chooses O
-	current4 := &Cell{Mark: XMark}
-	req4 := "O"
-	var err4 error
-	err4 = nil
-	if current4.SetMark(req4) != err4 {
-		t.Error(current4.SetMark(req4), err4)
-	}
-
-	//tests the case when cell is marked O and user chooses O
-	current5 := &Cell{Mark: OMark}
-	req5 := "O"
-	var err5 error
-	err5 = nil
-	if current5.SetMark(req5) != err5 {
-		t.Error(current1.SetMark(req5), err5)
-	}
-
-	//tests the case when cell is marked O and user chooses X
-	current6 := &Cell{Mark: OMark}
-	req6 := "X"
-	var err6 error
-	err6 = nil
-	if current6.SetMark(req6) != err6 {
-		t.Error(current1.SetMark(req6), err6)
-	}
-
 }
 
 func TestGetMark(t *testing.T) {
-	//tests if X is marked
-	current1 := &Cell{Mark: XMark}
-	required1 := XMark
-	if current1.GetMark() != required1 {
-		t.Error(current1, required1)
+	tests := []struct {
+		cell *Cell
+		want string
+	}{
+		{&Cell{Mark: NoMark}, NoMark},
+		{&Cell{Mark: OMark}, OMark},
+		{&Cell{Mark: XMark}, XMark},
+	}
+	for _, test := range tests {
+		got := test.cell.GetMark()
+		if test.want != got {
+			t.Error(test.want, got)
+		}
 	}
 
-	//tests if O is marked
-	current2 := &Cell{Mark: OMark}
-	required2 := OMark
-	if current2.GetMark() != required2 {
-		t.Error(current2, required2)
-	}
-
-	//tests if cell is unmarked
-	current3 := &Cell{Mark: NoMark}
-	required3 := NoMark
-	if current3.GetMark() != required3 {
-		t.Error(current3, required3)
-	}
 }

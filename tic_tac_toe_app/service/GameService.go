@@ -1,30 +1,43 @@
 package service
 
 import (
-	"errors"
+	"fmt"
 	"tic_tac_toe_app/components"
 )
 
 //GameService stores game details
 type GameService struct {
 	*ResultService
-	player1 *components.Player
-	player2 *components.Player
+	players [2]*components.Player
 }
 
 //NewGameService returns structure GameService
-func NewGameService(pl1, pl2 *components.Player, size int) *GameService {
-	return &GameService{NewResultService(NewBoardService(size)), pl1, pl2}
+func NewGameService(rs *ResultService, players [2]*components.Player) *GameService {
+	return &GameService{rs, players}
 }
 
-//BeginGame is used to play game
-func (g *GameService) BeginGame(place uint8, nm *components.Player) (string, error) {
-	if place < 0 || place > g.Dimension*g.Dimension-1 {
-		return "nil", errors.New("\t\t\tPosition is out of bounds")
+var turn int
+
+//Play is used to begin game
+func (gs *GameService) Play(index uint8) (Result, error) {
+	if index < 0 || index >= gs.Size*gs.Size {
+		return Result{false, false}, fmt.Errorf("Please enter an integer in range 0-%d", (gs.Size*gs.Size)-1)
 	}
-	err := g.PutMarkInPosition(place, nm)
-	if err != nil {
-		return "nil", err
+	var result Result
+	if turn%2 == 0 {
+		err := gs.PutMarkInPosition(gs.players[0], index)
+		if err != nil {
+			return Result{false, false}, err
+		}
+		result = gs.GetResult(gs.players[0].Mark)
+	} else if turn%2 == 1 {
+		err := gs.PutMarkInPosition(gs.players[1], index)
+		if err != nil {
+			return Result{false, false}, err
+		}
+		result = gs.GetResult(gs.players[1].Mark)
 	}
-	return g.GiveResult(nm), nil
+	// fmt.Println("turn", turn)
+	turn++
+	return result, nil
 }

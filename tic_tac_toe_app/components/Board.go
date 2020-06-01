@@ -1,20 +1,20 @@
 package components
 
-//Board stores cell
+//Board stores Size and cells of the board
 type Board struct {
-	Cells     []*Cell
-	Dimension uint8
+	Cells []*Cell
+	Size  uint8
 }
 
-//NewBoard ill create a new Board
-func NewBoard(dim uint8) *Board {
-	TotalCells := dim * dim
-	var BoardMatrix = make([]*Cell, TotalCells)
-	for i := range BoardMatrix {
-		BoardMatrix[i] = NewCell()
+//NewBoard returns struct Board
+func NewBoard(size uint8) *Board {
+	BoardSize := size * size
+	var cellArray = make([]*Cell, BoardSize)
+	for i := range cellArray {
+		cellArray[i] = NewCell()
 	}
 	return &Board{
-		Cells:     BoardMatrix,
-		Dimension: dim,
+		Cells: cellArray,
+		Size:  size,
 	}
 }

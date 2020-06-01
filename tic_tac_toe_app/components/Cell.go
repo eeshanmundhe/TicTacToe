@@ -1,6 +1,8 @@
 package components
 
-import "errors"
+import (
+	"errors"
+)
 
 //Cell takes Mark of string type
 type Cell struct {
@@ -20,20 +22,19 @@ const (
 
 //NewCell returns the Mark from Cell structmark
 func NewCell() *Cell {
-	c := Cell{Mark: NoMark}
-	return &c
-}
-
-//GetMark returns the Mark of the cell
-func (c *Cell) GetMark() string {
-	return c.Mark
+	return &Cell{Mark: NoMark}
 }
 
 //SetMark returns error if cell is already marked, else it marks the cell
-func (c *Cell) SetMark(m string) error {
-	if c.Mark == "-" {
-		c.Mark = m
+func (cell *Cell) SetMark(mark string) error {
+	if cell.Mark == NoMark {
+		cell.Mark = mark
 		return nil
 	}
-	return errors.New("\t\t\tCell has been marked already, try an empty cell")
+	return errors.New("Cell is already marked")
+}
+
+//GetMark returns the Mark of the cell
+func (cell *Cell) GetMark() string {
+	return cell.Mark
 }

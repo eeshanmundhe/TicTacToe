@@ -1,162 +1,136 @@
 package service
 
 import (
+	"Tic-Tac-Toe/components"
 	"testing"
-	"tic_tac_toe_app/components"
 )
 
-func TestCheckRow(t *testing.T) {
+func TestCheckRows(t *testing.T) {
 	tests := []struct {
-		input    *ResultService
-		mark     string
-		expected bool
+		rs   *ResultService
+		mark string
+		want bool
 	}{
 		{&ResultService{&BoardService{&components.Board{
-			Dimension: 2,
-			Cells: []*components.Cell{
-				{Mark: components.XMark},
-				{Mark: components.XMark},
-				{Mark: components.NoMark},
-				{Mark: components.OMark},
-			},
-		},
-		},
-		}, components.XMark, true},
-
-		{&ResultService{&BoardService{&components.Board{
-			Dimension: 3,
 			Cells: []*components.Cell{
 				{Mark: components.OMark},
 				{Mark: components.OMark},
+				{Mark: components.OMark},
+				{Mark: components.XMark},
+				{Mark: components.NoMark},
 				{Mark: components.XMark},
 				{Mark: components.NoMark},
 				{Mark: components.NoMark},
-				{Mark: components.NoMark},
-				{Mark: components.OMark},
-				{Mark: components.OMark},
-				{Mark: components.OMark},
+				{Mark: components.XMark},
 			},
+			Size: 3,
 		},
 		},
 		}, components.OMark, true},
 	}
+
 	for _, test := range tests {
-		if test.input.checkRow(test.mark) != test.expected {
-			t.Error("check row failed")
+		got := test.rs.checkRow(test.mark)
+		if test.want != got {
+			t.Error(test.want, got)
 		}
 	}
 }
 
-func TestCheckColumn(t *testing.T) {
+func TestCheckColumns(t *testing.T) {
 	tests := []struct {
-		input    *ResultService
-		mark     string
-		expected bool
+		rs   *ResultService
+		mark string
+		want bool
 	}{
 		{&ResultService{&BoardService{&components.Board{
-			Dimension: 2,
-			Cells: []*components.Cell{
-				{Mark: components.XMark},
-				{Mark: components.OMark},
-				{Mark: components.XMark},
-				{Mark: components.NoMark},
-			},
-		},
-		},
-		}, components.XMark, true},
-
-		{&ResultService{&BoardService{&components.Board{
-			Dimension: 3,
 			Cells: []*components.Cell{
 				{Mark: components.OMark},
 				{Mark: components.XMark},
 				{Mark: components.OMark},
 				{Mark: components.OMark},
 				{Mark: components.XMark},
-				{Mark: components.NoMark},
 				{Mark: components.OMark},
 				{Mark: components.NoMark},
 				{Mark: components.NoMark},
+				{Mark: components.OMark},
 			},
+			Size: 3,
 		},
 		},
 		}, components.OMark, true},
 	}
+
 	for _, test := range tests {
-		if test.input.checkColumn(test.mark) != test.expected {
-			t.Error("check column failed")
+		got := test.rs.checkColumn(test.mark)
+		if test.want != got {
+			t.Error(test.want, got)
 		}
 	}
 }
 
-func TestCheckAcrossLeft(t *testing.T) {
+func TestCheckFirstDiagonal(t *testing.T) {
 	tests := []struct {
-		input    *ResultService
-		mark     string
-		expected bool
+		rs   *ResultService
+		mark string
+		want bool
 	}{
 		{&ResultService{&BoardService{&components.Board{
-			Dimension: 2,
 			Cells: []*components.Cell{
 				{Mark: components.XMark},
 				{Mark: components.OMark},
-				{Mark: components.NoMark},
 				{Mark: components.XMark},
-			},
-		},
-		},
-		}, components.XMark, true},
-
-		{&ResultService{&BoardService{&components.Board{
-			Dimension: 3,
-			Cells: []*components.Cell{
+				{Mark: components.OMark},
 				{Mark: components.XMark},
 				{Mark: components.OMark},
 				{Mark: components.OMark},
-				{Mark: components.NoMark},
-				{Mark: components.XMark},
-				{Mark: components.NoMark},
-				{Mark: components.NoMark},
-				{Mark: components.XMark},
+				{Mark: components.OMark},
 				{Mark: components.XMark},
 			},
+			Size: 3,
 		},
 		},
 		}, components.XMark, true},
 	}
+
 	for _, test := range tests {
-		if test.input.checkAcrossLeft(test.mark) != test.expected {
-			t.Error("check Left diagonal failed")
+		got := test.rs.checkFirstDiagonal(test.mark)
+		test.rs.checkFirstDiagonal(test.mark)
+		if test.want != got {
+			t.Error(test.want, got)
 		}
 	}
 }
 
-func TestCheckAcrossRight(t *testing.T) {
+func TestCheckSecondDiagonal(t *testing.T) {
 	tests := []struct {
-		input    *ResultService
-		mark     string
-		expected bool
+		rs   *ResultService
+		mark string
+		want bool
 	}{
 		{&ResultService{&BoardService{&components.Board{
-			Dimension: 3,
 			Cells: []*components.Cell{
 				{Mark: components.NoMark},
 				{Mark: components.OMark},
 				{Mark: components.XMark},
-				{Mark: components.NoMark},
-				{Mark: components.XMark},
-				{Mark: components.NoMark},
+				{Mark: components.OMark},
 				{Mark: components.XMark},
 				{Mark: components.OMark},
+				{Mark: components.XMark},
 				{Mark: components.OMark},
+				{Mark: components.XMark},
 			},
+			Size: 3,
 		},
 		},
 		}, components.XMark, true},
 	}
+
 	for _, test := range tests {
-		if test.input.checkAcrossRight(test.mark) != test.expected {
-			t.Error("check right diagonal failed")
+		got := test.rs.checkSecondDiagonal(test.mark)
+		test.rs.checkSecondDiagonal(test.mark)
+		if test.want != got {
+			t.Error(test.want, got)
 		}
 	}
 }
