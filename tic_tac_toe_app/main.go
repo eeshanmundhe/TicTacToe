@@ -26,6 +26,7 @@ func main() {
 	fmt.Println("\t\t\t6. The positions start with 0 at first row and first column.")
 
 	var board *components.Board
+	var sz int
 	for {
 		flag := 0
 		fmt.Println("\n\t\t\tEnter the size of the board: ")
@@ -37,6 +38,7 @@ func main() {
 			flag = 1
 		}
 		if flag == 0 {
+			sz = size * size
 			board = components.NewBoard(uint8(size))
 			break
 		}
@@ -90,10 +92,13 @@ func main() {
 				flag = 1
 				continue
 			} else {
-				time.Sleep(time.Second)
-				cmd1 := exec.Command("cmd", "/c", "cls")
-				cmd1.Stdout = os.Stdout
-				cmd1.Run()
+				if index < sz && index >= 0 {
+					time.Sleep(time.Second)
+					cmd1 := exec.Command("cmd", "/c", "cls")
+					cmd1.Stdout = os.Stdout
+					cmd1.Run()
+				}
+
 			}
 
 			result, err = ourGameService.Play(uint8(index))
@@ -110,7 +115,7 @@ func main() {
 		fmt.Println(ourGameService.PrintBoard())
 		fmt.Println("")
 		if result.Win == true {
-			fmt.Println("\t\t\tWinner is ", player1.Name)
+			fmt.Println("\t\t\tWinner is", player1.Name)
 			break
 		}
 		if result.Draw == true {
