@@ -119,7 +119,7 @@ func main() {
 		}
 		for {
 			flag := 0
-			fmt.Println("\t\t\tEnter our position", player2.Name)
+			fmt.Println("\t\t\tEnter your position", player2.Name)
 			indexNow, err := reader.ReadString('\n')
 			indexNow = strings.TrimSpace(indexNow)
 			index, err := strconv.Atoi(indexNow)
