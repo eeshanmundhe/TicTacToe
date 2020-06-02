@@ -9,35 +9,33 @@ import (
 type GameService struct {
 	*ResultService
 	players [2]*components.Player
+	turn    int
 }
 
 //NewGameService returns structure GameService
-func NewGameService(rs *ResultService, players [2]*components.Player) *GameService {
-	return &GameService{rs, players}
+func NewGameService(res *ResultService, players [2]*components.Player) *GameService {
+	return &GameService{res, players, 0}
 }
 
-var turn int
-
 //Play is used to begin game
-func (gs *GameService) Play(index uint8) (Result, error) {
-	if index < 0 || index >= gs.Size*gs.Size {
-		return Result{false, false}, fmt.Errorf("Please enter an integer in range 0-%d", (gs.Size*gs.Size)-1)
+func (game *GameService) Play(pos uint8) (Result, error) {
+	if pos < 0 || pos >= game.Size*game.Size {
+		return Result{"", false, false}, fmt.Errorf("Integer should be in range [0,%d]", game.Size*game.Size-1)
 	}
-	var result Result
-	if turn%2 == 0 {
-		err := gs.PutMarkInPosition(gs.players[0], index)
+	var res Result
+	if game.turn%2 == 0 {
+		err := game.PutMarkInPosition(game.players[0], pos)
 		if err != nil {
-			return Result{false, false}, err
+			return Result{"", false, false}, err
 		}
-		result = gs.GetResult(gs.players[0].Mark)
-	} else if turn%2 == 1 {
-		err := gs.PutMarkInPosition(gs.players[1], index)
+		res = game.GetResult(game.players[0], pos)
+	} else if game.turn%2 == 1 {
+		err := game.PutMarkInPosition(game.players[1], pos)
 		if err != nil {
-			return Result{false, false}, err
+			return Result{"", false, false}, err
 		}
-		result = gs.GetResult(gs.players[1].Mark)
+		res = game.GetResult(game.players[1], pos)
 	}
-	// fmt.Println("turn", turn)
-	turn++
-	return result, nil
+	game.turn++
+	return res, nil
 }
