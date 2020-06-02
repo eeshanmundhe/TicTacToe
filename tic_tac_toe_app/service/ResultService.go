@@ -63,7 +63,7 @@ func (res *ResultService) checkSecondDiagonal(mark string) bool {
 //GetResult return the result of the game
 func (res *ResultService) GetResult(player *components.Player, pos uint8) Result {
 
-	if res.checkRows(player.Mark, pos) || res.checkColumns(player.Mark, pos) || res.checkFirstDiagonal(player.Mark) || res.checkFirstDiagonal(player.Mark) {
+	if res.checkRows(player.Mark, pos) || res.checkColumns(player.Mark, pos) || res.checkFirstDiagonal(player.Mark) || res.checkSecondDiagonal(player.Mark) {
 		return Result{res.PrintResult(player.Name + " Won"), true, false}
 	} else if res.CheckBoardIsFull() {
 		return Result{res.PrintResult("Draw"), false, true}
