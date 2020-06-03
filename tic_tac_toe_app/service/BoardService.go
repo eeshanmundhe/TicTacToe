@@ -27,7 +27,6 @@ func (b *BoardService) PrintBoard() string {
 		if i%(b.Size) == (b.Size)-1 {
 			matrixString += "\n\t\t\t"
 		}
-		//matrixString += fmt.Sprint(b.Board.Cells[i].GetMark())
 	}
 	return matrixString
 }

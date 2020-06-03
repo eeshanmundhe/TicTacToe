@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 	"tic_tac_toe_app/components"
@@ -26,7 +25,7 @@ func main() {
 	fmt.Println("\t\t\t6. The positions start with 0 at first row and first column.")
 
 	var board *components.Board
-	var sz int
+
 	for {
 		flag := 0
 		fmt.Println("\n\t\t\tEnter the size of the board: ")
@@ -38,7 +37,6 @@ func main() {
 			flag = 1
 		}
 		if flag == 0 {
-			sz = size * size
 			board = components.NewBoard(uint8(size))
 			break
 		}
@@ -57,21 +55,13 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	randomNumber := rand.Intn(10)
 
-	cmd := exec.Command("cmd", "/c", "cls")
-
 	if randomNumber >= 5 {
 		player1 = components.NewPlayer(name1, "X")
 		player2 = components.NewPlayer(name2, "O")
-		time.Sleep(time.Second)
-		cmd.Stdout = os.Stdout
-		cmd.Run()
 		fmt.Println("\t\t\tComputer chooses", name1, "to play first!")
 	} else {
 		player1 = components.NewPlayer(name2, "X")
 		player2 = components.NewPlayer(name1, "O")
-		time.Sleep(time.Second)
-		cmd.Stdout = os.Stdout
-		cmd.Run()
 		fmt.Println("\t\t\tComputer chooses", name2, "to play first!")
 	}
 	ourBoardService := service.NewBoardService(board)
@@ -91,14 +81,6 @@ func main() {
 				fmt.Println(err)
 				flag = 1
 				continue
-			} else {
-				if index < sz && index >= 0 {
-					time.Sleep(time.Second)
-					cmd1 := exec.Command("cmd", "/c", "cls")
-					cmd1.Stdout = os.Stdout
-					cmd1.Run()
-				}
-
 			}
 
 			result, err = ourGameService.Play(uint8(index))
@@ -132,11 +114,6 @@ func main() {
 				fmt.Println(err)
 				flag = 1
 				continue
-			} else {
-				time.Sleep(time.Second)
-				cmd1 := exec.Command("cmd", "/c", "cls")
-				cmd1.Stdout = os.Stdout
-				cmd1.Run()
 			}
 
 			result, err = ourGameService.Play(uint8(index))
